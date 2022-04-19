@@ -1,7 +1,6 @@
 # TCP-KNN-H
 This code is part of my doctoral research at PPG-CC/DC/UFSCar. Test Hybrid Partitions - Sparsification Knn - Hierarchical Comunity Detection Methods.
 
-
 ## How to cite 
 @misc{Gatto2021, author = {Gatto, E. C.}, title = {Test Hybrid Partitions using Communities Detection Methods for Multilabell Classification}, year = {2022}, publisher = {GitHub}, journal = {GitHub repository}, howpublished = {\url{https://github.com/cissagatto/TCP-KNN-H}}}
 
@@ -23,7 +22,6 @@ Random: Click [here](https://www.4shared.com/s/dhsxOnLwH) to download
 [download yaml](https://www.4shared.com/s/fk5Io4faLiq)
 
 To use conda environment to run this experiment, please consult [here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) 
-
 
 ## Flowchart
 <img src="https://github.com/cissagatto/TCP-KNN-H/blob/master/comunity-paper-Page-1.png" width="300">
@@ -93,7 +91,7 @@ _number_cores_ is the total cores you want to use in parallel execution.
 
 _number_folds_ is the number of folds you want for cross-validation
 
-_similarity_ is similaritie measure that were used to build the graph
+_similarity_ is similarity measure that were used to build the graph
 
 _name_folders_results_ is the name of the folder to save the results
 
@@ -101,7 +99,7 @@ _name_folders_results_ is the name of the folder to save the results
 All parameters are mandatory. Example:
 
 ```
-Rscript tcp.R 17 5 10 "jaccard" "/dev/shm/results/"
+Rscript tcp.R 17 5 10 "Jaccard" "/dev/shm/results/"
 
 ```
 
