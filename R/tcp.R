@@ -132,55 +132,6 @@ cat("\n# ====> TCP-KNN-H: CREATING DIRECTORIES                             #")
 cat("\n#####################################################################\n\n")
 diretorios = directories(dataset_name, folderResults)
 
-#print(system("sudo chown -R elaine ~/.config"))
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-KNN-H: COPY PARTITIONS FROM GOOGLE DRIVE                #")
-#cat("\n#####################################################################\n\n")
-#destino = paste(diretorios$folderPartitions)
-#origem = paste("cloud:[2022]ResultadosExperimentos/Communities/Partitions/", similarity, "/", dataset_name, "/Partitions", sep="")
-#comando = paste("rclone copy ", origem, " ", destino, sep="")
-#cat("\n\n\n", comando, "\n\n\n")
-#a = print(system(comando))
-#a = as.numeric(a)
-#if(a != 0) {
-#  stop("Erro RCLONE")
-#  quit("yes")
-#}
-#cat("\n\n")
-
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-KNN-H: COPY COMMUNITIES FROM GOOGLE DRIVE               #")
-#cat("\n#####################################################################\n\n")
-#destino2 = diretorios$folderCommunities
-#origem2 = paste("cloud:[2022]ResultadosExperimentos/Communities/Partitions/", similarity, "/", dataset_name, "/Communities", sep="")
-#comando2 = paste("rclone copy ", origem2, " ", destino2, sep="")
-#cat("\n\n\n", comando2, "\n\n\n")
-#a = print(system(comando2))
-#a = as.numeric(a)
-#if(a != 0) {
-#  stop("Erro RCLONE")
-#  quit("yes")
-#}
-#cat("\n\n")
-
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-KNN-H: COPY DATA SETS FROM GOOGLE DRIVE                 #")
-#cat("\n#####################################################################\n\n")
-#destino3 = diretorios$folderDatasets
-#origem3 = paste("cloud:Datasets/CrossValidation_WithValidation/", dataset_name, sep="")
-#comando3 = paste("rclone copy ", origem3, " ", destino3, sep="")
-#cat("\n\n\n", comando3, "\n\n\n")
-#a = print(system(comando3))
-#a = as.numeric(a)
-#if(a != 0) {
-#  stop("Erro RCLONE")
-#  quit("yes")
-#}
-#cat("\n\n")
-
 
 cat("\n\n###################################################################")
 cat("\n# ====> TCP-KNN-H: ORGANIZANDO AS COISAS                            #")
@@ -300,145 +251,23 @@ write.csv(result_set, "Runtime.csv")
 print(timeTCP)
 cat("\n")
 
-str2 = paste("rm -rf ", diretorios$folderDatasets, sep="")
+str2 = paste("cp -r ", diretorios$folderTest ,
+             " ", diretorios$folderReports, sep="")
 print(system(str2))
 
-
-
-cat("\n\n###################################################################")
-cat("\n# ====> TCP-KNN-H: COMPRESS TEST RESULTS                             #")
-cat("\n#####################################################################\n\n")
-str = paste(" tar -zcf ", diretorios$folderTest ,"/test.tar.gz ",
-            diretorios$folderReports, sep="")
-print(system(str))
-
-
-str2 = paste("cp ", diretorios$folderTest ,"/test.tar.gz ", diretorios$folderReports, sep="")
+str2 = paste("cp -r ", diretorios$folderValidate ,
+             " ", diretorios$folderReports, sep="")
 print(system(str2))
 
-str2 = paste("rm -rf ", diretorios$folderTest, sep="")
-print(system(str2))
+str = "~/TCP-KNN-H/Reports/"
+if(dir.exists(str)==FALSE){dir.create(str)}
 
-
-
-cat("\n\n###################################################################")
-cat("\n# ====> TCP-KNN-H: COMPRESS VALIDATE RESULTS                             #")
-cat("\n#####################################################################\n\n")
-str = paste(" tar -zcf ", diretorios$folderValidate ,"/test.tar.gz ",
-            diretorios$folderReports, sep="")
-print(system(str))
-
-str2 = paste("cp ", diretorios$folderValidate ,"/test.tar.gz ",
-             diretorios$folderReports, sep="")
-print(system(str2))
-
-str2 = paste("rm -rf ", diretorios$folderValidate, sep="")
-print(system(str2))
-
-
-#################################################################
-str2 = paste("rm -rf ", diretorios$folderCommunities, sep="")
-print(system(str2))
-
-str2 = paste("rm -rf ", diretorios$folderPartitions, sep="")
-print(system(str2))
-################################################################
-
-
-
-cat("\n\n###################################################################")
-cat("\n# ====> TCP-TR-NH: COPY TO HOME                                     #")
-cat("\n#####################################################################\n\n")
-
-str0 = "~/TCP-KNN-H/Reports"
-if(dir.exists(str0)==FALSE){dir.create(str0)}
-
-str1 = paste(str0, "/", similarity, sep="")
+str1 = paste(str, "/", dataset_name, sep="")
 if(dir.exists(str1)==FALSE){dir.create(str1)}
 
-str2 = paste(str1, "/Knn-H", sep="")
-if(dir.exists(str2)==FALSE){dir.create(str2)}
-
-str3 = paste(str2, "/", dataset_name, sep="")
-if(dir.exists(str3)==FALSE){dir.create(str3)}
-
-str4 = paste("cp -r ", diretorios$folderReports, "/* ", str3, sep="")
-print(system(str4))
-
-
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-KNN-H: COPY TEST RAR TO GOOGLE DRIVE                     #")
-#cat("\n#####################################################################\n\n")
-#origem1 = paste(diretorios$folderTest , "/test.tar.gz", sep="")
-#destino1 = paste("cloud:[2022]ResultadosExperimentos/Communities/Test/", similarity, "/", dataset_name, "/Knn-H/Test", sep="")
-#comando1 = paste("rclone copy ", origem1, " ", destino1, sep="")
-#cat("\n\n\n", comando1, "\n\n\n")
-#a = print(system(comando1))
-#a = as.numeric(a)
-#if(a != 0){
-#  stop("Erro RCLONE")
-#  quit("yes")
-#}
-#cat("\n\n")
-
-
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-KNN-H: COMPRESS REPORTS RESULTS                             #")
-#cat("\n#####################################################################\n\n")
-#str = paste("tar -zcf ", diretorios$folderReports ,"/test.tar.gz ", diretorios$folderReports, sep="")
-#print(system(str))
-
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-KNN-H: COPY REPORTS TO GOOGLE DRIVE                      #")
-#cat("\n#####################################################################\n\n")
-#origem1 = diretorios$folderReports
-#destino1 = paste("cloud:[2022]ResultadosExperimentos/Communities/Test/", similarity, "/", dataset_name, "/Knn-H/Test", sep="")
-#comando1 = paste("rclone copy ", origem1, " ", destino1, sep="")
-#cat("\n\n\n", comando1, "\n\n\n")
-#a = print(system(comando1))
-#a = as.numeric(a)
-#if(a != 0){
-#  stop("Erro RCLONE")
-#  quit("yes")
-#}
-#cat("\n\n")
-
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-KNN-H: COPY TO GOOGLE DRIVE                             #")
-#cat("\n#####################################################################\n\n")
-#origem1 = paste(diretorios$folderValidate , "/validate.tar.gz", sep="")
-#destino1 = paste("cloud:[2022]ResultadosExperimentos/Communities/Test/", similarity, "/", dataset_name, "/Knn-H/Validation", sep="")
-#comando1 = paste("rclone -P copy ", origem1, " ", destino1, sep="")
-#cat("\n\n\n", comando1, "\n\n\n")
-#a = print(system(comando1))
-#a = as.numeric(a)
-#if(a != 0){
-#  stop("Erro RCLONE")
-#  quit("yes")
-#}
-#cat("\n\n")
-
-
-#cat("\n\n###################################################################")
-#cat("\n# ====> TCP-TR-NH: COPY TO GOOGLE DRIVE                             #")
-#cat("\n#####################################################################\n\n")
-#origem1 = str3
-#destino1 = paste("cloud:[2022]ResultadosExperimentos/Communities/Test/",
-#                 similarity, "/", dataset_name, "/Knn-H/", sep="")
-#comando1 = paste("rclone copy ", origem1, " ", destino1, sep="")
-#cat("\n\n\n", comando1, "\n\n\n")
-#a = print(system(comando1))
-#a = as.numeric(a)
-#if(a != 0){
-#  stop("Erro RCLONE")
-#  quit("yes")
-#}
-#cat("\n\n")
-
+str2 = paste("cp -r ", diretorios$folderReports ,
+             " ", str1, sep="")
+print(system(str2))
 
 cat("\n\n###################################################################")
 cat("\n# ====> TCP-KNN-H: CLEAN                                            #")
