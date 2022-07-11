@@ -1,4 +1,5 @@
-# TCP-KNN-H
+# Test Community Partition k-NN Hierarchical with Clus
+
 This code is part of my doctoral research at PPG-CC/DC/UFSCar. Test Hybrid Partitions - Sparsification Knn - Hierarchical Comunity Detection Methods.
 
 ## How to cite 
