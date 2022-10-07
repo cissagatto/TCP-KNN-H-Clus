@@ -227,7 +227,7 @@ while(s<=length(similarity.name)){
 
 
       write("echo RUNNING", file = output.file, append = TRUE)
-      str7 = paste("Rscript /home/u704616/TCP-KNN-H-ECC/R/tcp.R \"",
+      str7 = paste("Rscript /home/u704616/TCP-KNN-H-Clus/R/tcp.R \"",
                    config_name, "\"", sep = "")
       write(str7, file = output.file, append = TRUE)
       write(" ", file = output.file, append = TRUE)
