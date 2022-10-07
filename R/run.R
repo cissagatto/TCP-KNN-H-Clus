@@ -1,25 +1,31 @@
-##################################################################################################
-# Test the Best Partition with CLUS                                                              #
-# Copyright (C) 2021                                                                             #
-#                                                                                                #
-# This code is free software: you can redistribute it and/or modify it under the terms of the    #
-# GNU General Public License as published by the Free Software Foundation, either version 3 of   #
-# the License, or (at your option) any later version. This code is distributed in the hope       #
-# that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of         #
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for    #
-# more details.                                                                                  #
-#                                                                                                #
-# Elaine Cecilia Gatto | Prof. Dr. Ricardo Cerri | Prof. Dr. Mauri Ferrandin                     #
-# Federal University of Sao Carlos (UFSCar: https://www2.ufscar.br/) Campus Sao Carlos           #
-# Computer Department (DC: https://site.dc.ufscar.br/)                                           #
-# Program of Post Graduation in Computer Science (PPG-CC: http://ppgcc.dc.ufscar.br/)            #
-# Bioinformatics and Machine Learning Group (BIOMAL: http://www.biomal.ufscar.br/)               #
-#                                                                                                #
-##################################################################################################
+###############################################################################
+# TEST COMMUNITIES PARTITIONS
+# Copyright (C) 2022
+#
+# This code is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free
+# Software Foundation, either version 3 of the License, or (at your option)
+# any later version. This code is distributed in the hope that it will be
+# useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+# Public License for more details.
+#
+# Elaine Cecilia Gatto | Prof. Dr. Ricardo Cerri | Prof. Dr. Mauri Ferrandin
+# Federal University of Sao Carlos (UFSCar: https://www2.ufscar.br/) Campus
+# Sao Carlos Computer Department (DC: https://site.dc.ufscar.br/)
+# Program of Post Graduation in Computer Science
+# (PPG-CC: http://ppgcc.dc.ufscar.br/)
+# Bioinformatics and Machine Learning Group
+# (BIOMAL: http://www.biomal.ufscar.br/)
+#
+###############################################################################
 
 
-FolderRoot = "~/TCP-KNN-H/"
-FolderScripts = paste(FolderRoot, "/R/", sep="")
+###############################################################################
+# SET WORKSAPCE                                                               #
+###############################################################################
+FolderRoot = "~/TCP-KNN-H-Clus"
+FolderScripts = paste(FolderRoot, "/R", sep="")
 
 
 ##################################################################################################
@@ -29,196 +35,301 @@ FolderScripts = paste(FolderRoot, "/R/", sep="")
 # number_folds: number of folds for cross validation                                             #
 # delete: if you want, or not, to delete all folders and files generated                         #
 ##################################################################################################
-execute <- function(ds, dataset_name, number_dataset,
-                    number_folds, number_cores,
-                    folderResults, diretorios){
+execute <- function(parameters){
 
-  diretorios = diretorios
+  FolderRoot = "~/TCP-KNN-H-Clus"
+  FolderScripts = paste(FolderRoot, "/R", sep="")
 
-  if(number_cores == 0){
-    cat("\n\n################################################################################################")
-    cat("\n#Zero is a disallowed value for number_cores. Please choose a value greater than or equal to 1.#")
-    cat("\n##################################################################################################\n\n")
+  if(parameters$Number.Cores  == 0){
+    cat("\n\n##################################################################################################")
+      cat("\n# Zero is a disallowed value for number_cores. Please choose a value greater than or equal to 1. #")
+      cat("\n##################################################################################################\n\n")
   } else {
-    cl <- parallel::makeCluster(number_cores)
+    cl <- parallel::makeCluster(parameters$Number.Cores)
     doParallel::registerDoParallel(cl)
     print(cl)
 
-    if(number_cores==1){
-      cat("\n\n###############################################################")
-      cat("\n# ====> RUN: Running Sequentially!                              #")
-      cat("\n#################################################################\n\n")
+    if(parameters$Number.Cores==1){
+      cat("\n\n###########################################################")
+        cat("\n# RUN: Running Sequentially!                              #")
+        cat("\n###########################################################\n\n")
     } else {
-      cat("\n\n###############################################################")
-      cat("\n# ====> RUN: Running in parallel with ", number_cores, " cores! #")
-      cat("\n#################################################################\n\n")
+      cat("\n\n######################################################################")
+        cat("\n# RUN: Running in parallel with ", parameters$Number.Cores, " cores! #")
+        cat("\n######################################################################\n\n")
     }
   }
 
   retorno = list()
 
   setwd(FolderScripts)
-  source("testClus.R")
-
-  setwd(FolderScripts)
-  source("validate.R")
-
-  setwd(FolderScripts)
   source("libraries.R")
 
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: Get dataset information: ", number_dataset, "          #")
-  cat("\n#####################################################################\n\n")
-  setwd(FolderRoot)
-  datasets <- data.frame(read.csv("datasets-2022.csv"))
-  ds = datasets[number_dataset,]
-  info = infoDataSet(ds)
-  dataset_name = toString(ds$Name)
+  setwd(FolderScripts)
+  source("utils.R")
+
+  setwd(FolderScripts)
+  source("validateSilho.R")
+
+  setwd(FolderScripts)
+  source("testSilho.R")
+
+  setwd(FolderScripts)
+  source("validateMaF1.R")
+
+  setwd(FolderScripts)
+  source("testMaF1.R")
 
 
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: Get the label space                                    #")
-  cat("\n#####################################################################\n\n")
-  timeLabelSpace = system.time(resLS <- labelSpace(ds,
-                                                   dataset_name,
-                                                   number_folds,
-                                                   folderResults))
+  cat("\n\n################################################################")
+    cat("\n# RUN: Get the label space                                     #")
+    cat("\n################################################################\n\n")
+  timeLabelSpace = system.time(resLS <- labelSpace(parameters))
+  parameters$LabelSpace = resLS
 
 
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: build and test partitions                              #")
-  cat("\n#####################################################################\n\n")
-  timeSilho = system.time(resTHP <- comuputeSilhouete(ds,
-                                                      resLS,
-                                                      dataset_name,
-                                                      number_folds,
-                                                      folderResults))
+  if(validation==1){
+
+    cat("\n\n################################################################")
+    cat("\n# RUN: choosed                                     #")
+    cat("\n################################################################\n\n")
+    timeChoosed = system.time(resChoosed <- silho.choosed(parameters))
+    parameters$Choosed = resChoosed
+
+    cat("\n\n#############################################################")
+      cat("\n# VALIDATION WITH SILHOUETTE                                #")
+      cat("\n#############################################################\n\n")
+    timeVal = system.time(resTHP <- silhouete(parameters))
+
+    cat("\n\n#############################################################")
+    cat("\n# BEST SILHOUETTE                                             #")
+    cat("\n#############################################################\n\n")
+    timeBest = system.time(resBest <- silho.best.partitions(parameters))
+    parameters$best.silhouette = resBest
 
 
-  cat("\n\n###################################################################")
-  cat("\n# ====> TCP-TR-NH: COPY TO GOOGLE DRIVE                             #")
-  cat("\n#####################################################################\n\n")
-  origem1 = diretorios$folderValidate
-  destino1 = paste("cloud:[2022]ResultadosExperimentos/Communities/Test/",
-                   similarity, "/", dataset_name, "/Knn-H/Reports/Validation", sep="")
-  comando1 = paste("rclone copy ", origem1, " ",
-                   destino1, sep="")
-  cat("\n\n\n", comando1, "\n\n\n")
-  a = print(system(comando1))
-  a = as.numeric(a)
-  if(a != 0){
-    stop("Erro RCLONE")
-    quit("yes")
+    cat("\n\n#######################################################")
+    cat("\n# COPY VALIDATION TO GOOGLE DRIVE                       #")
+    cat("\n#########################################################\n\n")
+    origem1 = parameters$Folders$folderValSilho
+    destino1 = paste("nuvem:Clus/Communities/Test/",
+                     similarity, "/Silhouette/", dataset_name,
+                     "/Knn-H/Validation", sep="")
+    comando1 = paste("rclone copy ", origem1, " ",
+                     destino1, sep="")
+    cat("\n\n\n", comando1, "\n\n\n")
+    a = print(system(comando1))
+    a = as.numeric(a)
+    if(a != 0){
+      stop("Erro RCLONE")
+      quit("yes")
+    }
+    cat("\n\n")
+
+
+    cat("\n\n############################################################")
+    cat("\n# DELETING VALIDATION DIRECTORY                            #")
+    cat("\n############################################################\n\n")
+    system(paste("rm -r ", parameters$Folders$folderValSilho, sep=""))
+
+
+    cat("\n\n############################################################")
+      cat("\n# TEST WITH SIHOUETTE                                      #")
+      cat("\n############################################################\n\n")
+    timeTest = system.time(resTHP <- testSilhouette(parameters))
+
+
+    cat("\n\n#######################################################")
+    cat("\n# COPY TO GOOGLE DRIVE                                #")
+    cat("\n#########################################################\n\n")
+    origem1 = parameters$Folders$folderTestSilho
+    destino1 = paste("nuvem:Clus/Communities/Test/",
+                     similarity, "/Silhouette/", dataset_name,
+                     "/Knn-H/Tested", sep="")
+    comando1 = paste("rclone copy ", origem1, " ",
+                     destino1, sep="")
+    cat("\n\n\n", comando1, "\n\n\n")
+    a = print(system(comando1))
+    a = as.numeric(a)
+    if(a != 0){
+      stop("Erro RCLONE")
+      quit("yes")
+    }
+    cat("\n\n")
+
+
+    cat("\n\n#############################################################")
+    cat("\n# RUN: Save Runtime                                         #")
+    cat("\n#############################################################\n\n")
+    Runtime = rbind(timeLabelSpace,
+                    timeChoosed,
+                    timeVal,
+                    timeBest,
+                    timeTest)
+    setwd(parameters$Folders$folderTestSilho)
+    write.csv(Runtime, paste(dataset_name,
+                             "-test-Runtime.csv", sep=""),
+              row.names = FALSE)
+
+
+  } else if (validation==2){
+
+
+    cat("\n\n################################################################")
+    cat("\n# RUN: CHOOSED                                     #")
+    cat("\n################################################################\n\n")
+    timeChoosed = system.time(resChoosed <- maf1.choosed(parameters))
+    parameters$Choosed = resChoosed
+
+
+    cat("\n\n#############################################################")
+      cat("\n# VALIDATION WITH CLUS MACRO-F1                             #")
+      cat("\n#############################################################\n\n")
+    timeVal = system.time(resTHP <- maf1.validate(parameters))
+
+
+    cat("\n\n#############################################################")
+      cat("\n# BEST PARTITIONS MACRO-F1                                  #")
+      cat("\n#############################################################\n\n")
+    parameters$Best = 8
+    timeBest = system.time(resTHP <- maf1.best.partitions(parameters))
+
+
+    cat("\n\n#############################################################")
+      cat("\n# RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
+      cat("\n#############################################################\n\n")
+    origem1 = parameters$Folders$folderValMaF1
+    destino1 = paste("nuvem:Clus/Communities/Test/",
+                     similarity, "/Macro-F1/", dataset_name,
+                     "/Knn-H/Validation", sep="")
+    comando1 = paste("rclone copy ", origem1, " ",
+                     destino1, sep="")
+    cat("\n\n\n", comando1, "\n\n\n")
+    a = print(system(comando1))
+    a = as.numeric(a)
+    if(a != 0){
+      stop("Erro RCLONE")
+      quit("yes")
+    }
+    cat("\n\n")
+
+
+    cat("\n\n#############################################################")
+    cat("\n# DELETING VALIDATION DIR                                     #")
+    cat("\n#############################################################\n\n")
+    system(paste("rm -r ", parameters$Folders$folderValMaF1, sep=""))
+
+
+    cat("\n\n#############################################################")
+    cat("\n# CHOOSED                                     #")
+    cat("\n#############################################################\n\n")
+    timeChoosed = system.time(resChoosed <- maf1.choosed(parameters))
+    parameters$choosed = resChoosed
+
+
+    cat("\n\n#############################################################")
+      cat("\n# TEST WITH CLUS MACRO-F1                                   #")
+      cat("\n#############################################################\n\n")
+    timeTest = system.time(resTHP <- test.MacroF1(parameters))
+
+
+    cat("\n\n#############################################################")
+    cat("\n# RUN: Save Runtime                                         #")
+    cat("\n#############################################################\n\n")
+    Runtime = rbind(timeLabelSpace,
+                    timeChoosed,
+                    timeVal,
+                    timeBest,
+                    timeTest)
+    setwd(parameters$Folders$folderTestMaF1)
+    write.csv(Runtime, paste(dataset_name,
+                             "-test-Runtime.csv", sep=""),
+              row.names = FALSE)
+
+  } else {
+
+    cat("\n\n############################################################")
+      cat("\n# VALIDATION WITH CLUS MICRO-F1                            #")
+      cat("\n############################################################\n\n")
+    timeVal = system.time(resTHP <- validate(resChoosed, parameters))
+
+
+    cat("\n\n#############################################################")
+      cat("\n# BEST PARTITIONS MICRO-F1                                  #")
+      cat("\n#############################################################\n\n")
+    parameters$Best = 13
+    timeBest = system.time(resTHP <- bestPartition(parameters))
+
+
+    cat("\n\n#############################################################")
+      cat("\n# RUN COPY VALIDATION TO GOOGLE DRIVE                       #")
+      cat("\n#############################################################\n\n")
+    origem1 = parameters$Folders$folderValMiF1
+    destino1 = paste("nuvem:Clus/Communities/Test/",
+                     similarity, "/Micro-F1/", dataset_name,
+                     "/Knn-H/Validation", sep="")
+    comando1 = paste("rclone copy ", origem1, " ",
+                     destino1, sep="")
+    cat("\n\n\n", comando1, "\n\n\n")
+    a = print(system(comando1))
+    a = as.numeric(a)
+    if(a != 0){
+      stop("Erro RCLONE")
+      quit("yes")
+    }
+    cat("\n\n")
+
+
+    cat("\n\n#############################################################")
+      cat("\n# TEST WITH CLUS MICRO-F1                                   #")
+      cat("\n#############################################################\n\n")
+    timeTest = system.time(resTHP <- test(resChoosed, parameters))
+
+
+    cat("\n\n#########################################################")
+      cat("\n# RUN TEST TO TO GOOGLE DRIVE                           #")
+      cat("\n#########################################################\n\n")
+    origem1 = parameters$Folders$folderTest
+    destino1 = paste("nuvem:Clus/Communities/Test/",
+                     similarity, "/", dataset_name,
+                     "/Knn-H/Reports/Tested", sep="")
+    comando1 = paste("rclone copy ", origem1, " ",
+                     destino1, sep="")
+    cat("\n\n\n", comando1, "\n\n\n")
+    a = print(system(comando1))
+    a = as.numeric(a)
+    if(a != 0){
+      stop("Erro RCLONE")
+      quit("yes")
+    }
+    cat("\n\n")
+
+
+    cat("\n\n#############################################################")
+      cat("\n# RUN: Save Runtime                                         #")
+      cat("\n#############################################################\n\n")
+    Runtime = rbind(timeLabelSpace,
+                    timeChoosed,
+                    timeVal,
+                    timeBest,
+                    timeTest)
+    setwd(parameters$Folders$folderTestMiF1)
+    write.csv(Runtime, paste(dataset_name,
+                             "-test-Runtime.csv", sep=""),
+              row.names = FALSE)
+
   }
-  cat("\n\n")
 
 
-
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: build and test partitions                              #")
-  cat("\n#####################################################################\n\n")
-  timeBuild = system.time(resBT <- buildAndTest(ds,
-                                                dataset_name,
-                                                number_dataset,
-                                                number_folds,
-                                                number_cores,
-                                                folderResults,
-                                                diretorios))
-
-
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: Matrix Confusion                                       #")
-  cat("\n#####################################################################\n\n")
-  timeSplit = system.time(resGather <- juntaResultados(ds,
-                                                       dataset_name,
-                                                       number_dataset,
-                                                       number_folds,
-                                                       number_cores,
-                                                       folderResults,
-                                                       diretorios))
-
-
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: Evaluation Fold                                        #")
-  cat("\n#####################################################################\n\n")
-  timeAvalia = system.time(resEval <- avaliaTest(ds,
-                                                 dataset_name,
-                                                 number_dataset,
-                                                 number_folds,
-                                                 number_cores,
-                                                 folderResults,
-                                                 diretorios))
-
-
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: Gather Evaluation                                      #")
-  cat("\n#####################################################################\n\n")
-  timeGather = system.time(resGE <- juntaAvaliacoes(ds,
-                                                    dataset_name,
-                                                    number_dataset,
-                                                    number_folds,
-                                                    number_cores,
-                                                    folderResults,
-                                                    diretorios))
-
-
-  cat("\n\n#################################################################")
-  cat("\n# ====> RUN: Organize Evaluation                                  #")
-  cat("\n###################################################################\n\n")
-  timeOrg = system.time(resOA <- organizaAvaliacoes(ds,
-                                                    dataset_name,
-                                                    number_dataset,
-                                                    number_folds,
-                                                    number_cores,
-                                                    folderResults,
-                                                    diretorios))
-
-
-  cat("\n\n###################################################################")
-  cat("\n# ====> TCP-TR-NH: COPY TO GOOGLE DRIVE                             #")
-  cat("\n#####################################################################\n\n")
-  origem1 = diretorios$folderTest
-  destino1 = paste("cloud:[2022]ResultadosExperimentos/Communities/Test/",
-                   similarity, "/", dataset_name, "/Knn-H/Reports/Tested", sep="")
-  comando1 = paste("rclone copy ", origem1, " ",
-                   destino1, sep="")
-  cat("\n\n\n", comando1, "\n\n\n")
-  a = print(system(comando1))
-  a = as.numeric(a)
-  if(a != 0){
-    stop("Erro RCLONE")
-    quit("yes")
-  }
-  cat("\n\n")
-
-
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: Save Runtime                                           #")
-  cat("\n#####################################################################\n\n")
-  Runtime = rbind(timeLabelSpace,
-                  timeSilho,
-                  timeBuild,
-                  timeSplit,
-                  timeAvalia,
-                  timeGather,
-                  timeOrg)
-  setwd(diretorios$folderTest)
-  write.csv(Runtime, paste(dataset_name,
-                           "-test-Runtime.csv", sep=""),
-            row.names = FALSE)
-
-
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: Stop Parallel                                          #")
-  cat("\n#####################################################################\n\n")
+  cat("\n\n#############################################################")
+  cat("\n# RUN: Stop Parallel                                          #")
+  cat("\n###############################################################\n\n")
   on.exit(stopCluster(cl))
 
-  cat("\n\n###################################################################")
-  cat("\n# ====> RUN: END                                                    #")
-  cat("\n#####################################################################\n\n")
+  cat("\n\n#############################################################")
+  cat("\n# RUN: END                                                    #")
+  cat("\n###############################################################\n\n")
 
-
-  if(interactive()==TRUE){ flush.console() }
   gc()
 
 }
