@@ -98,23 +98,18 @@ while(s<=length(similarity.name)){
       cat("\nValidation \t", validation.name[v])
       cat("\nDataset \t", ds$Name)
 
-      # "j-3s-bbc1000"
-      job_name = paste("k", similarity.nick[s],
-                       validation.nick[v], "-", ds$Name, sep = "")
+      # "ekjs-3s-bbc1000"
+      name = paste("ck",  similarity.nick[s],
+                   validation.nick[s], "-", ds$Name, sep="")
 
-      fn = paste("k", similarity.nick[s], validation.nick[v],
-                 "-", ds$Name, sep = "")
+      # "/scratch/ekjs-3s-bbc1000"
+      folder_name = paste("/scratch/", name , sep = "")
 
-      # "/scratch/j-3s-bbc1000"
-      folder_name = paste("/scratch/", fn , sep = "")
+      # "~/TCP-KNN-H-ECC/config-files/jaccard/Silhouette/ekjs-3s-bbc1000.csv"
+      config_name = paste(FolderSimCFVal, "/", name, ".csv", sep="")
 
-      # "~/TCP-KNN-H-Clus/tcp-clus-config-files/jaccard/Silhouette/
-      # jaccard-3s-bbc1000.csv"
-      config_name = paste(FolderSimCFVal, "/", similarity.nick[s], "-",
-                          ds$Name, ".csv", sep="")
-
-      # "~/TCP-KNN-H-Clus/tcp-clus-jobs/jaccard/Silhouette/j-3s-bbc1000.sh"
-      sh_name = paste(FolderVal, "/", job_name, ".sh", sep = "")
+      # "~/TCP-KNN-H-ECC/jobs/jaccard/Silhouette/ekjs-3s-bbc1000.sh"
+      sh_name = paste(FolderVal, "/", name, ".sh", sep = "")
 
       # start writing
       output.file <- file(sh_name, "wb")
@@ -122,7 +117,7 @@ while(s<=length(similarity.name)){
       # bash parameters
       write("#!/bin/bash", file = output.file)
 
-      str1 = paste("#SBATCH -J ", job_name, sep = "")
+      str1 = paste("#SBATCH -J ", name, sep = "")
       write(str1, file = output.file, append = TRUE)
 
       write("#SBATCH -o %j.out", file = output.file, append = TRUE)
@@ -158,7 +153,7 @@ while(s<=length(similarity.name)){
       write("", file = output.file, append = TRUE)
 
       # FUNCTION TO CLEAN THE JOB
-      str2 = paste("local_job=",  "\"/scratch/", job_name, "\"", sep = "")
+      str2 = paste("local_job=",  "\"/scratch/", name, "\"", sep = "")
       write(str2, file = output.file, append = TRUE)
       write("function clean_job(){", file = output.file, append = TRUE)
       str3 = paste(" echo", "\"CLEANING ENVIRONMENT...\"", sep = " ")
@@ -179,7 +174,7 @@ while(s<=length(similarity.name)){
       write("", file = output.file, append = TRUE)
       write("echo ===========================================================",
             file = output.file, append = TRUE)
-      str30 = paste("echo Sbatch == ", job_name, " == Start!!!", sep="")
+      str30 = paste("echo Sbatch == ", name, " == Start!!!", sep="")
       write(str30,
             file = output.file, append = TRUE)
       write("echo ===========================================================",
@@ -232,7 +227,7 @@ while(s<=length(similarity.name)){
 
 
       write("echo RUNNING", file = output.file, append = TRUE)
-      str7 = paste("Rscript /home/u704616/TCP-KNN-H-Clus/R/tcp.R \"",
+      str7 = paste("Rscript /home/u704616/TCP-KNN-H-ECC/R/tcp.R \"",
                    config_name, "\"", sep = "")
       write(str7, file = output.file, append = TRUE)
       write(" ", file = output.file, append = TRUE)
@@ -246,7 +241,7 @@ while(s<=length(similarity.name)){
       write("", file = output.file, append = TRUE)
       write("echo ===========================================================",
             file = output.file, append = TRUE)
-      str20 = paste("echo Sbatch == ", job_name,
+      str20 = paste("echo Sbatch == ", name,
                     " == Ended Successfully!!!", sep="")
       write(str20, file = output.file, append = TRUE)
       write("echo ===========================================================",

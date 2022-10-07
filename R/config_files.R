@@ -48,7 +48,7 @@ n = nrow(datasets)
 ###############################################################################
 # CREATING FOLDER TO SAVE CONFIG FILES                                        #
 ###############################################################################
-# "~/TCP-KNN-H-Clus/tcp-clus-config-files"
+# "~/TCP-KNN-H-ECC/config-files"
 FolderCF = paste(FolderRoot, "/config-files", sep="")
 if(dir.exists(FolderCF)==FALSE){dir.create(FolderCF)}
 
@@ -66,7 +66,7 @@ validation.nick = c("s", "ma", "mi")
 s = 1
 while(s<=length(similarity.name)){
 
-  # "~/TCP-KNN-H-Clus/tcp-clus-config-files/jaccard"
+  # "~/TCP-KNN-H-ECC/config-files/jaccard"
   FolderSimilarity = paste(FolderCF, "/", similarity.name[s], sep="")
   if(dir.exists(FolderSimilarity)==FALSE){dir.create(FolderSimilarity)}
 
@@ -74,7 +74,7 @@ while(s<=length(similarity.name)){
   v = 1
   while(v<=length(validation)){
 
-    # "~/TCP-KNN-H-Clus/tcp-clus-config-files/jaccard/1"
+    # "~/TCP-KNN-H-ECC/config-files/jaccard/silhouette"
     FolderValidation = paste(FolderSimilarity, "/", validation.name[v], sep="")
     if(dir.exists(FolderValidation)==FALSE){dir.create(FolderValidation)}
 
@@ -90,14 +90,18 @@ while(s<=length(similarity.name)){
       cat("\nDataset \t", ds$Name)
       cat("\n===============================================")
 
-      # Confi File Name
-      # "~/TCP-KNN-H-Clus/tcp-clus-config-files/jaccard/Silhouette/
-      # jaccard-3s-bbc1000.csv"
-      file_name = paste(FolderValidation, "/", similarity.nick[s],
-                        "-", ds$Name, ".csv", sep="")
+      # "ekjs-3s-bbc1000"
+      name = paste("ck",  similarity.nick[s],
+                   validation.nick[s], "-", ds$Name, sep="")
+
+      # "/scratch/ekjs-3s-bbc1000"
+      folder_name = paste("/scratch/", name , sep = "")
+
+      # "~/TCP-KNN-H-ECC/config-files/jaccard/Silhouette/ekjs-3s-bbc1000.csv"
+      config_name = paste(FolderValidation, "/", name, ".csv", sep="")
 
       # Starts building the configuration file
-      output.file <- file(file_name, "wb")
+      output.file <- file(config_name, "wb")
 
       # Config file table header
       write("Config, Value",
@@ -111,26 +115,13 @@ while(s<=length(similarity.name)){
       # write("Dataset_Path, /home/cissa/Datasets",
       #      file = output.file, append = TRUE)
 
-      # job name
-      job_name = paste("k", similarity.nick[s],
-                       validation.nick[v], "-", ds$Name, sep = "")
-
-      fn = paste("k", similarity.nick[s], validation.nick[v],
-                 "-", ds$Name, sep = "")
-
-      # folder_name = paste("\"/scratch/", job_name, "\"", sep = "")
-      # folder_name = paste("~/Exhaustive-MiF1-ECC/", job_name, sep = "")
-      # folder_name = paste("~/tmp/", job_name, sep = "")
-      # folder_name = paste("/dev/shm/", fn, sep = "")
-      folder_name = paste("/scratch/", fn, sep = "")
-
       # Absolute path to the folder where temporary processing will be done.
       # You should use "scratch", "tmp" or "/dev/shm", it will depend on the
       # cluster model where your experiment will be run.
       str1 = paste("Temporary_Path, ", folder_name, sep="")
       write(str1,file = output.file, append = TRUE)
 
-       str = paste("/home/u704616/Partitions/CDM/",
+      str = paste("/home/u704616/Partitions/CDM/",
                   similarity.name[s], sep="")
 
       # str = paste("/home/cissa/Partitions/CDM/",
