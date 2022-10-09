@@ -28,14 +28,14 @@ cat("\n\n##############################################################")
 
 
 cat("\n\n##############################################################")
-  cat("\n# TCP-KNN-H: SET WORK SPACE                                  #")
+  cat("\n# TCP-KNN-H-Clus SET WORK SPACE                                  #")
   cat("\n##############################################################\n\n")
 FolderRoot = "~/TCP-KNN-H-Clus"
 FolderScripts = paste(FolderRoot, "/R", sep="")
 
 
 cat("\n\n##############################################################")
-  cat("\n# TCP-KNN-H: LOAD SOURCES                                    #")
+  cat("\n# TCP-KNN-H-Clus LOAD SOURCES                                    #")
   cat("\n##############################################################\n\n")
 setwd(FolderScripts)
 source("libraries.R")
@@ -48,7 +48,7 @@ source("run.R")
 
 
 cat("\n\n##############################################################")
-  cat("\n# TCP-KNN-H: OPTIONS CONFIGURATIONS                          #")
+  cat("\n# TCP-KNN-H-Clus OPTIONS CONFIGURATIONS                          #")
   cat("\n##############################################################\n\n")
 options(java.parameters = "-Xmx64g")
 options(show.error.messages = TRUE)
@@ -56,14 +56,14 @@ options(scipen=20)
 
 
 cat("\n\n##############################################################")
-  cat("\n# TCP-KNN-H: READ DATASETS                                   #")
+  cat("\n# TCP-KNN-H-Clus READ DATASETS                                   #")
   cat("\n##############################################################\n\n")
 setwd(FolderRoot)
 datasets <- data.frame(read.csv("datasets-original.csv"))
 
 
 cat("\n\n##############################################################")
-  cat("\n# TCP-KNN-H: GET THE ARGUMENTS COMMAND LINE                  #")
+  cat("\n# TCP-KNN-H-Clus GET THE ARGUMENTS COMMAND LINE                  #")
   cat("\n##############################################################\n\n")
 args <- commandArgs(TRUE)
 
@@ -74,9 +74,16 @@ args <- commandArgs(TRUE)
 # from csv file                                                             #
 #############################################################################
 
-# config_file = "~/TCP-KNN-H-Clus/tcp-clus-config-files/rogers/Macro-F1/ro-GpositiveGO.csv"
+# config_file = "~/TCP-KNN-H-Clus/config-files/rogers/Macro-F1/ctroma-GpositiveGO.csv"
+# config_file = "~/TCP-KNN-H-Clus/config-files/rogers/Silhouette/ctros-GpositiveGO.csv"
+
+# config_file = "~/TCP-KNN-H-Clus/config-files/jaccard/Macro-F1/ctjma-GpositiveGO.csv"
+# config_file = "~/TCP-KNN-H-Clus/config-files/jaccard/Silhouette/ctjs-GpositiveGO.csv"
+
 
 config_file <- args[1]
+
+
 
 if(file.exists(config_file)==FALSE){
   cat("\n################################################################")
@@ -331,12 +338,14 @@ timeTCP = system.time(res <- execute(parameters))
 
 
 cat("\n\n###################################################################")
-cat("\n# ====> TCP-KNN-H: SAVE RUNTIME                                     #")
+cat("\n# ====> TCP-KNN-H-Clus SAVE RUNTIME                                     #")
 cat("\n#####################################################################\n\n")
 result_set <- t(data.matrix(timeTCP))
 
 
-
+##########################################
+# VALIDATION = 1 --> SILHOUETTE
+##########################################
 if(parameters$Validation==1){
 
   setwd(diretorios$folderReports)
@@ -390,6 +399,9 @@ if(parameters$Validation==1){
 
 } else if (parameters$Validation==2){
 
+  ##########################################
+  # VALIDATION = 2 --> MACRO F1
+  ##########################################
 
   setwd(diretorios$folderTestMaF1)
   write.csv(result_set, "Runtime.csv")
@@ -443,6 +455,11 @@ if(parameters$Validation==1){
 
 } else {
 
+
+  ##########################################
+  # VALIDATION = 3 --> MICRO F1
+  ##########################################
+
 }
 
 
@@ -465,17 +482,22 @@ if(parameters$Validation==1){
 #              " ", str1, sep="")
 # print(system(str2))
 
+
+
+
 cat("\n\n###################################################################")
-cat("\n# ====> TCP-KNN-H: CLEAN                                            #")
-cat("\n#####################################################################\n\n")
+  cat("\n# TCP-KNN-H-Clus CLEAN                                            #")
+  cat("\n###################################################################\n\n")
 str2 = paste("rm -rf ", diretorios$folderResults, sep="")
 print(system(str2))
 rm(list = ls())
 gc()
 
+
+
 cat("\n\n###################################################################")
-cat("\n# ====> TCP-KNN-H: END                                              #")
-cat("\n#####################################################################\n")
+  cat("\n# TCP-KNN-H-Clus END                                              #")
+  cat("\n###################################################################\n")
 
 rm(list = ls())
 

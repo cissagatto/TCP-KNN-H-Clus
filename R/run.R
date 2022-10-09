@@ -96,10 +96,12 @@ execute <- function(parameters){
     timeChoosed = system.time(resChoosed <- silho.choosed(parameters))
     parameters$Choosed = resChoosed
 
+
     cat("\n\n#############################################################")
       cat("\n# VALIDATION WITH SILHOUETTE                                #")
       cat("\n#############################################################\n\n")
     timeVal = system.time(resTHP <- silhouete(parameters))
+
 
     cat("\n\n#############################################################")
     cat("\n# BEST SILHOUETTE                                             #")
@@ -127,6 +129,7 @@ execute <- function(parameters){
     cat("\n\n")
 
 
+
     cat("\n\n############################################################")
     cat("\n# DELETING VALIDATION DIRECTORY                            #")
     cat("\n############################################################\n\n")
@@ -137,25 +140,6 @@ execute <- function(parameters){
       cat("\n# TEST WITH SIHOUETTE                                      #")
       cat("\n############################################################\n\n")
     timeTest = system.time(resTHP <- testSilhouette(parameters))
-
-
-    cat("\n\n#######################################################")
-    cat("\n# COPY TO GOOGLE DRIVE                                #")
-    cat("\n#########################################################\n\n")
-    origem1 = parameters$Folders$folderTestSilho
-    destino1 = paste("nuvem:Clus/Communities/Test/",
-                     similarity, "/Silhouette/", dataset_name,
-                     "/Knn-H/Tested", sep="")
-    comando1 = paste("rclone copy ", origem1, " ",
-                     destino1, sep="")
-    cat("\n\n\n", comando1, "\n\n\n")
-    a = print(system(comando1))
-    a = as.numeric(a)
-    if(a != 0){
-      stop("Erro RCLONE")
-      quit("yes")
-    }
-    cat("\n\n")
 
 
     cat("\n\n#############################################################")
@@ -284,26 +268,6 @@ execute <- function(parameters){
       cat("\n# TEST WITH CLUS MICRO-F1                                   #")
       cat("\n#############################################################\n\n")
     timeTest = system.time(resTHP <- test(resChoosed, parameters))
-
-
-    cat("\n\n#########################################################")
-      cat("\n# RUN TEST TO TO GOOGLE DRIVE                           #")
-      cat("\n#########################################################\n\n")
-    origem1 = parameters$Folders$folderTest
-    destino1 = paste("nuvem:Clus/Communities/Test/",
-                     similarity, "/", dataset_name,
-                     "/Knn-H/Reports/Tested", sep="")
-    comando1 = paste("rclone copy ", origem1, " ",
-                     destino1, sep="")
-    cat("\n\n\n", comando1, "\n\n\n")
-    a = print(system(comando1))
-    a = as.numeric(a)
-    if(a != 0){
-      stop("Erro RCLONE")
-      quit("yes")
-    }
-    cat("\n\n")
-
 
     cat("\n\n#############################################################")
       cat("\n# RUN: Save Runtime                                         #")
