@@ -354,23 +354,53 @@ if(parameters$Validation==1){
   cat("\n")
 
 
-  cat("\n\n#######################################################")
-  cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
-  cat("\n#########################################################\n\n")
-  origem1 = parameters$Folders$folderTestSilho
-  destino1 = paste("nuvem:Clus/Communities/Test/",
-                   similarity, "/Silhouette/", dataset_name,
-                   "/Knn-H/Tested", sep="")
-  comando1 = paste("rclone copy ", origem1, " ",
-                   destino1, sep="")
-  cat("\n\n\n", comando1, "\n\n\n")
-  a = print(system(comando1))
-  a = as.numeric(a)
-  if(a != 0){
-    stop("Erro RCLONE")
-    quit("yes")
-  }
-  cat("\n\n")
+  # cat("\n\n#######################################################")
+  # cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
+  # cat("\n#########################################################\n\n")
+  # origem1 = parameters$Folders$folderTestSilho
+  # destino1 = paste("nuvem:Clus/Communities/Test/",
+  #                  similarity, "/Silhouette/", dataset_name,
+  #                  "/Knn-H/Tested", sep="")
+  # comando1 = paste("rclone copy ", origem1, " ",
+  #                  destino1, sep="")
+  # cat("\n\n\n", comando1, "\n\n\n")
+  # a = print(system(comando1))
+  # a = as.numeric(a)
+  # if(a != 0){
+  #   stop("Erro RCLONE")
+  #   quit("yes")
+  # }
+  # cat("\n\n")
+
+
+  # cat("\n\n#######################################################")
+  # cat("\n# COPY REPORTS TO GOOGLE DRIVE                        #")
+  # cat("\n#######################################################\n\n")
+  # origem1 = parameters$Folders$folderReports
+  # destino1 = paste("nuvem:Clus/Communities/Test/",
+  #                  similarity, "/Silhouette/", dataset_name,
+  #                  "/Knn-H/", sep="")
+  # comando1 = paste("rclone copy ", origem1, " ",
+  #                  destino1, sep="")
+  # cat("\n\n\n", comando1, "\n\n\n")
+  # a = print(system(comando1))
+  # a = as.numeric(a)
+  # if(a != 0){
+  #   stop("Erro RCLONE")
+  #   quit("yes")
+  # }
+  # cat("\n\n")
+
+  cat("\n\n######")
+  cat("\n# COPY #")
+  cat("\n########\n\n")
+  str2 = paste("cp -r ", diretorios$folderTestSilho,
+               " ", diretorios$folderRepSilho, sep="")
+  print(system(str2))
+
+  str2 = paste("cp -r ", diretorios$folderReports ,
+               "/* ", diretorios$folderRepSilho , sep="")
+  print(system(str2))
 
 
   cat("\n\n############################################################")
@@ -379,23 +409,6 @@ if(parameters$Validation==1){
   system(paste("rm -r ", parameters$Folders$folderTestSilho, sep=""))
 
 
-  cat("\n\n#######################################################")
-  cat("\n# COPY REPORTS TO GOOGLE DRIVE                        #")
-  cat("\n#######################################################\n\n")
-  origem1 = parameters$Folders$folderReports
-  destino1 = paste("nuvem:Clus/Communities/Test/",
-                   similarity, "/Silhouette/", dataset_name,
-                   "/Knn-H/", sep="")
-  comando1 = paste("rclone copy ", origem1, " ",
-                   destino1, sep="")
-  cat("\n\n\n", comando1, "\n\n\n")
-  a = print(system(comando1))
-  a = as.numeric(a)
-  if(a != 0){
-    stop("Erro RCLONE")
-    quit("yes")
-  }
-  cat("\n\n")
 
 } else if (parameters$Validation==2){
 
@@ -409,48 +422,58 @@ if(parameters$Validation==1){
   cat("\n")
 
 
-  cat("\n\n#######################################################")
-  cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
-  cat("\n#########################################################\n\n")
-  origem1 = parameters$Folders$folderTestMaF1
-  destino1 = paste("nuvem:Clus/Communities/Test/",
-                   similarity, "/Macro-F1/", dataset_name,
-                   "/Knn-H/Tested", sep="")
-  comando1 = paste("rclone copy ", origem1, " ",
-                   destino1, sep="")
-  cat("\n\n\n", comando1, "\n\n\n")
-  a = print(system(comando1))
-  a = as.numeric(a)
-  if(a != 0){
-    stop("Erro RCLONE")
-    quit("yes")
-  }
-  cat("\n\n")
+  # cat("\n\n#######################################################")
+  # cat("\n# COPY TEST TO GOOGLE DRIVE                           #")
+  # cat("\n#########################################################\n\n")
+  # origem1 = parameters$Folders$folderTestMaF1
+  # destino1 = paste("nuvem:Clus/Communities/Test/",
+  #                  similarity, "/Macro-F1/", dataset_name,
+  #                  "/Knn-H/Tested", sep="")
+  # comando1 = paste("rclone copy ", origem1, " ",
+  #                  destino1, sep="")
+  # cat("\n\n\n", comando1, "\n\n\n")
+  # a = print(system(comando1))
+  # a = as.numeric(a)
+  # if(a != 0){
+  #   stop("Erro RCLONE")
+  #   quit("yes")
+  # }
+  # cat("\n\n")
+
+  # cat("\n\n#######################################################")
+  # cat("\n# COPY REPORTS TO GOOGLE DRIVE                        #")
+  # cat("\n#######################################################\n\n")
+  # origem1 = parameters$Folders$folderReports
+  # destino1 = paste("nuvem:Clus/Communities/Test/",
+  #                  similarity, "/Macro-F1/", dataset_name,
+  #                  "/Knn-H/", sep="")
+  # comando1 = paste("rclone copy ", origem1, " ",
+  #                  destino1, sep="")
+  # cat("\n\n\n", comando1, "\n\n\n")
+  # a = print(system(comando1))
+  # a = as.numeric(a)
+  # if(a != 0){
+  #   stop("Erro RCLONE")
+  #   quit("yes")
+  # }
+  # cat("\n\n")
+
+  cat("\n\n######")
+  cat("\n# COPY #")
+  cat("\n########\n\n")
+  str2 = paste("cp -r ", diretorios$folderTestMaF1,
+               " ", diretorios$folderRepMaF1, sep="")
+  print(system(str2))
+
+  str2 = paste("cp -r ", diretorios$folderReports ,
+               "/* ", diretorios$folderRepMaF1 , sep="")
+  print(system(str2))
 
 
   cat("\n\n############################################################")
   cat("\n# DELETING TEST DIR                                        #")
   cat("\n############################################################\n\n")
   system(paste("rm -r ", parameters$Folders$folderTestMaF1, sep=""))
-
-
-  cat("\n\n#######################################################")
-  cat("\n# COPY REPORTS TO GOOGLE DRIVE                        #")
-  cat("\n#######################################################\n\n")
-  origem1 = parameters$Folders$folderReports
-  destino1 = paste("nuvem:Clus/Communities/Test/",
-                   similarity, "/Macro-F1/", dataset_name,
-                   "/Knn-H/", sep="")
-  comando1 = paste("rclone copy ", origem1, " ",
-                   destino1, sep="")
-  cat("\n\n\n", comando1, "\n\n\n")
-  a = print(system(comando1))
-  a = as.numeric(a)
-  if(a != 0){
-    stop("Erro RCLONE")
-    quit("yes")
-  }
-  cat("\n\n")
 
 
 } else {
@@ -461,27 +484,6 @@ if(parameters$Validation==1){
   ##########################################
 
 }
-
-
-
-# str2 = paste("cp -r ", diretorios$folderTest ,
-#              " ", diretorios$folderReports, sep="")
-# print(system(str2))
-#
-# str2 = paste("cp -r ", diretorios$folderValidate ,
-#              " ", diretorios$folderReports, sep="")
-# print(system(str2))
-#
-# str = "~/TCP-KNN-H/Reports/"
-# if(dir.exists(str)==FALSE){dir.create(str)}
-#
-# str1 = paste(str, "/", dataset_name, sep="")
-# if(dir.exists(str1)==FALSE){dir.create(str1)}
-#
-# str2 = paste("cp -r ", diretorios$folderReports ,
-#              " ", str1, sep="")
-# print(system(str2))
-
 
 
 
