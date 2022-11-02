@@ -427,6 +427,7 @@ silho.build.test <- function(parameters){
         cinco = paste(parameters$Dataset.Name, "-split-tr-", f, "-group-", g, ".csv", sep="")
         seis = paste(parameters$Dataset.Name, "-split-ts-", f, "-group-", g, ".csv", sep="")
         sete = paste(parameters$Dataset.Name, "-split-", f, "-group-", g, ".out", sep="")
+        oito = paste("Variance_RHE_1.csv")
 
         setwd(FolderTestGroup)
         unlink(um, recursive = TRUE)
@@ -436,6 +437,7 @@ silho.build.test <- function(parameters){
         unlink(cinco, recursive = TRUE)
         unlink(seis, recursive = TRUE)
         unlink(sete, recursive = TRUE)
+        unlink(oito, recursive = TRUE)
 
         g = g + 1
         gc()

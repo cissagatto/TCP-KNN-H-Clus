@@ -26,7 +26,7 @@ rm(list = ls())
 cat("\n\n################################################################")
 cat("\n# TCP-KNN-H: SET WORK SPACE                                      #")
 cat("\n##############################################################\n\n")
-FolderRoot = "~/TCP-TR-H-Clus"
+FolderRoot = "~/TCP-KNN-H-Clus"
 FolderScripts = paste(FolderRoot, "/R", sep="")
 
 
@@ -93,7 +93,7 @@ while(s<=length(similarity.name)){
       ds = datasets[d, ]
 
       # "ctjs-3s-bbc1000"
-      name = paste("ct",  similarity.nick[s],
+      name = paste("ck",  similarity.nick[s],
                    validation.nick[v], "-", ds$Name, sep="")
 
       # "/scratch/ctjs-3s-bbc1000"
@@ -231,7 +231,7 @@ while(s<=length(similarity.name)){
 
 
       write("echo RUNNING", file = output.file, append = TRUE)
-      str7 = paste("Rscript /home/u704616/TCP-TR-H-Clus/R/tcp.R \"",
+      str7 = paste("Rscript /home/u704616/TCP-KNN-H-Clus/R/tcp.R \"",
                    config_name, "\"", sep = "")
       write(str7, file = output.file, append = TRUE)
       write(" ", file = output.file, append = TRUE)

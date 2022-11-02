@@ -91,7 +91,7 @@ while(s<=length(similarity.name)){
       cat("\n===============================================")
 
       # "ekjs-3s-bbc1000"
-      name = paste("ct",  similarity.nick[s],
+      name = paste("ck",  similarity.nick[s],
                    validation.nick[v], "-", ds$Name, sep="")
 
       # "/scratch/ekjs-3s-bbc1000"

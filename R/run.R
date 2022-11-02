@@ -129,8 +129,17 @@ execute <- function(parameters){
     # cat("\n\n")
 
 
-    str2 = paste("cp -r ", diretorios$folderValSilho,
-                 " ", diretorios$folderRepSilho, sep="")
+
+    str = paste(parameters$Folders$folderRepSilho, "/",
+                parameters$Dataset.Name, sep="")
+    if(dir.exists(str)==FALSE){dir.create(str)}
+
+    str2 = paste("cp -r ", parameters$Folders$folderValSilho,
+                 " ", str, sep="")
+    print(system(str2))
+
+    str2 = paste("cp -r ", parameters$Folders$folderReports ,
+                 "/* ", str , sep="")
     print(system(str2))
 
 
@@ -202,8 +211,16 @@ execute <- function(parameters){
     # }
     # cat("\n\n")
 
-    str2 = paste("cp -r ", diretorios$folderValMaF1 ,
-                 " ", diretorios$folderRepMaF1 , sep="")
+    str = paste(parameters$Folders$folderRepMaF1, "/",
+                parameters$Dataset.Name, sep="")
+    if(dir.exists(str)==FALSE){dir.create(str)}
+
+    str2 = paste("cp -r ", parameters$Folders$folderValMaF1,
+                 " ", str, sep="")
+    print(system(str2))
+
+    str2 = paste("cp -r ", parameters$Folders$folderReports ,
+                 "/* ", str , sep="")
     print(system(str2))
 
 

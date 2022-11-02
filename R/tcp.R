@@ -391,15 +391,13 @@ if(parameters$Validation==1){
   # }
   # cat("\n\n")
 
-  cat("\n\n######")
-  cat("\n# COPY #")
-  cat("\n########\n\n")
-  str2 = paste("cp -r ", diretorios$folderTestSilho,
-               " ", diretorios$folderRepSilho, sep="")
+  str = paste(diretorios$folderRepSilho, "/",
+              parameters$Dataset.Name, sep="")
+
+  str2 = paste("cp -r ", diretorios$folderTestSilho, " ", str, sep="")
   print(system(str2))
 
-  str2 = paste("cp -r ", diretorios$folderReports ,
-               "/* ", diretorios$folderRepSilho , sep="")
+  str2 = paste("cp -r ", diretorios$folderReports , "/* ", str , sep="")
   print(system(str2))
 
 
@@ -458,15 +456,13 @@ if(parameters$Validation==1){
   # }
   # cat("\n\n")
 
-  cat("\n\n######")
-  cat("\n# COPY #")
-  cat("\n########\n\n")
-  str2 = paste("cp -r ", diretorios$folderTestMaF1,
-               " ", diretorios$folderRepMaF1, sep="")
+  str = paste(diretorios$folderRepMaF1, "/",
+              parameters$Dataset.Name, sep="")
+
+  str2 = paste("cp -r ", diretorios$folderTestMaF1, " ", str, sep="")
   print(system(str2))
 
-  str2 = paste("cp -r ", diretorios$folderReports ,
-               "/* ", diretorios$folderRepMaF1 , sep="")
+  str2 = paste("cp -r ", diretorios$folderReports , "/* ", str , sep="")
   print(system(str2))
 
 
