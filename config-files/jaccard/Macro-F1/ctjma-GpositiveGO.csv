@@ -1,7 +1,7 @@
 Config, Value
-Dataset_Path, "~TCP-KNN-H-Clus/Datasets"
+Dataset_Path, "~/TCP-KNN-H-Clus/Datasets"
 Temporary_Path, /dev/shm/ctjma-GpositiveGO
-Partitions_Path, ~TCP-KNN-H-Clus/Partitions/jaccard
+Partitions_Path, ~/TCP-KNN-H-Clus/Partitions/jaccard
 Validation, 2
 Similarity, jaccard
 Dataset_Name, GpositiveGO
